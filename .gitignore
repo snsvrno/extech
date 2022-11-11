@@ -1,0 +1,18 @@
+# development enviroment
+.haxe
+.hl
+.neko
+.haxelib
+.obsidian
+.hld
+
+# build artifacts
+bin
+.runner
+
+# resources
+res
+res.src
+
+# local build files
+/*.hxml
