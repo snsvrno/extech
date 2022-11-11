@@ -167,6 +167,8 @@ class Main extends tui.Script {
 			var stats = sys.FileSystem.stat(file);
 			if(stats.mtime.toString() != timestamp.toString()) {
 				print('${ansi.Paint.paint(file, Green)} has changed', NAME);
+				if (tracer.Levels.isLt(tracer.Level.level, Regular))
+					error('${ansi.Paint.paint(file, Green)} has changed', NAME);
 				lines += 1;
 				build = true;
 			} else if (displayFiles) {

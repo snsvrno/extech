@@ -19,3 +19,8 @@ function toString(l:Levels) : String {
 function isGte(l1 : Levels, l2 : Levels) : Bool {
 	return cast(l1, Int) >= cast(l2, Int);
 }
+
+function isLt(l1 : Levels, l2 : Levels) : Bool {
+	return cast(l1, Int) < cast(l2, Int);
+}
+
