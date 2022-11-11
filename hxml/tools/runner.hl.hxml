@@ -1,0 +1,6 @@
+-cp tools/runner
+-main Main
+
+-cp lib
+
+--hl bin/tools/runner.hl
