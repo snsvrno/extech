@@ -11,7 +11,7 @@ bin
 .runner
 
 # resources
-res
+res/*.png
 res.src
 
 # local build files
