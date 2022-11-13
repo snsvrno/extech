@@ -55,8 +55,6 @@ class Main extends tui.Script {
 
 	private function run() {
 
-		sys.io.File.saveContent("file",'${Sys.args()}');
-
 		// setting global switches
 		if (!Switches.getFlag('source')) tracer.Level.showSource = false;
 		if (Switches.getFlag('quiet')) tracer.Level.level = Warning;
@@ -120,17 +118,31 @@ class Main extends tui.Script {
 		var code = process.exitCode(false);
 		while(code == null) {
 			// this is where i need to check for output from the program
-			try {
-				// captures the output, like trace
-				var output = process.stdout.readLine();
-				print(paint(">> ",White,Dim) + OutputParser.pretty(output));
 
-				code = process.exitCode(false);
-			} catch (e) { break; }
+			try {
+				while (true) {
+					var output = process.stdout.readLine();
+					print(paint(">> ",White,Dim) + OutputParser.pretty(output));
+				}
+			} catch (e) { }
+
+			try {
+				var line = 0;
+				while (true) {
+					var output = process.stderr.readLine();
+					line += 1;
+					if (line == 1)
+						print(paint(">> ",White,Red) + paint(output, White, Red));
+					else
+						print(paint(">> ",Red,Dim) + paint(OutputParser.pretty(output), Yellow));
+				}
+			} catch (e) { }
+
+			code = process.exitCode(false);
 		}
 
 		process.close();
-		
+		print('closing ${paint(command, Cyan)}', NAME);
 	}
 
 	/**
