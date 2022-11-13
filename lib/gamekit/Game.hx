@@ -132,9 +132,11 @@ class Game extends hxd.App {
 	}
 
 	final private function temporaryUpdate(dt : Float) {
-		for (i in 0 ... temporaryUpdateCalls.length) {
-			var call = temporaryUpdateCalls[temporaryUpdateCalls.length-1-i];
-			if (call(dt)) temporaryUpdateCalls.remove(call);
+		var length = temporaryUpdateCalls.length;
+		while(length > 0) {
+			var call = temporaryUpdateCalls.shift();
+			length -= 1;
+			if (!call(dt)) temporaryUpdateCalls.push(call);
 		}
 	}
 

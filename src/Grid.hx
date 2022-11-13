@@ -14,9 +14,6 @@ class Grid extends h2d.Object {
 		return gridColor = newColor;
 	}
 
-	/** the overall alpha for the grid */
-	private var gridAlpha : Float = 1;
-
 	private var grid : h2d.TileGroup;
 	private var backBuffer : h2d.TileGroup;
 
@@ -25,9 +22,6 @@ class Grid extends h2d.Object {
 
 	/** the world space that the grid covers */
 	private var area : gamekit.ds.Window = {x:0,y:0,h:0,w:0};
-
-	// SOME OPTIONS
-	inline static private var FADE_TIMER : Float = 0.3;
 
 	/**
 		* creates a new grid
@@ -41,10 +35,11 @@ class Grid extends h2d.Object {
 		var gridTile = hxd.Res.spritesheet.get('grid');
 
 		grid = new h2d.TileGroup(gridTile, this);
-		grid.alpha = gridAlpha;
+		grid.alpha = Settings.grid.alpha;
 
 		backBuffer = new h2d.TileGroup(gridTile, this);
 		backBuffer.alpha = 0;
+		if (Settings.grid.backbuffer == false) backBuffer.remove();
 
 		this.camera = camera;
 		redraw() ;
@@ -55,27 +50,26 @@ class Grid extends h2d.Object {
 		* fill the viewport of the camera
 		*/
 	public function redraw() {
-		var drawScale = calculateScale();
 
 		// we will only use the backbuffer is the scale of the grid
 		// has changed
-		if (hasDifferentScale()) {
+		if (hasDifferentScale() && Settings.grid.fade.enabled) {
 
 			////////////////////////////////////////////////////////////
 			// set up the back buffer fade
 			backBuffer.setScale(grid.scaleX);
-			backBuffer.alpha = gridAlpha;
+			backBuffer.alpha = Settings.grid.alpha;
 			// we add the transition effect to the update queue
 			{
 				var timer = 0.0;
-				var limit = FADE_TIMER;
+				var limit = Settings.grid.fade.timer;
 				gamekit.Game.addToUpdateCalls((dt) -> {
 					timer += dt;
 					if (timer >= limit) {
 						backBuffer.alpha = 0;
 						return true;
 					} else {
-						backBuffer.alpha = gridAlpha * (1 - timer/limit);
+						backBuffer.alpha = Settings.grid.alpha * (1 - timer/limit);
 						return false;
 					}
 				});
@@ -87,20 +81,18 @@ class Grid extends h2d.Object {
 			// we add the transition effect to the update queue
 			{
 				var timer = 0.0;
-				var limit = FADE_TIMER;
+				var limit = Settings.grid.fade.timer;
 				gamekit.Game.addToUpdateCalls((dt) -> {
 					timer += dt;
 					if (timer >= limit) {
-						grid.alpha = gridAlpha;
+						grid.alpha = Settings.grid.alpha;
 						return true;
 					} else {
-						grid.alpha = gridAlpha * (timer/limit);
+						grid.alpha = Settings.grid.alpha * (timer/limit);
 						return false;
 					}
 				});
 			}
-
-
 		}
 
 		redrawTiles(grid);
@@ -158,12 +150,11 @@ class Grid extends h2d.Object {
 		*/
 	private function calculateScale() : Float {
 		var factor = Math.floor(camera.scaleX/0.25);
-		var scaler = 2;
 
 		var drawScale = 1.0;
 		if (camera.scaleX < 1) drawScale = 4 - factor;
 		else if (camera.scaleX > 1) drawScale = 1/(factor - 3);
-		return drawScale * scaler;
+		return drawScale;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -182,6 +173,9 @@ class Grid extends h2d.Object {
 	inline private function top(window: gamekit.ds.Window) : Float return window.y;
 	inline private function bottom(window: gamekit.ds.Window) : Float return window.y + window.h;
 
+	/**
+		* checks if the scale has chonged enough to warrent a redraw
+		*/
 	inline private function hasDifferentScale() : Bool {
 		return calculateScale() != grid.scaleX;
 	}

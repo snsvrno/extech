@@ -12,8 +12,6 @@ class Map extends gamekit.Scene {
 
 	var grid : Grid;
 
-	var pos : h2d.Text;
-
 	override function init() {
 
 		///////////////////////////////////////////////////////////
@@ -34,13 +32,15 @@ class Map extends gamekit.Scene {
 
 		s2d.camera.setAnchor(0.5, 0.5);
 		grid = new Grid(s2d.camera, s2d);
-		pos = new h2d.Text(hxd.res.DefaultFont.get(), ui);
 
 		//////////////////////////////////////////////////////////
 		mode = Navigation;
+
+		#if debug debug.Debug.attach(ui); #end
 	}
 
 	override function update(dt : Float) {
+		#if debug debug.Debug.update(dt); #end
 		grid.update(dt);
 	}
 
@@ -53,7 +53,6 @@ class Map extends gamekit.Scene {
 		var newScale = s2d.camera.scaleX + zoomIncrement * delta;
 		if (newScale > zoomMax) newScale = zoomMax;
 		else if (newScale < zoomMin) newScale = zoomMin;
-		trace(newScale);
 		s2d.camera.setScale(newScale, newScale);
 	}
 
@@ -84,7 +83,7 @@ class Map extends gamekit.Scene {
 	}
 
 	override function onMouseMove(x:Float, y:Float) {
-		pos.text = '${x},${y}';
+		debug.Debug.updateWatch("pos", '${x},${y}');
 
 		switch(mode) {
 			case NavigationDrag(cpos,startpos):

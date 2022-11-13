@@ -11,6 +11,7 @@ enum Mode {
 
 function getColor(mode : Mode) : Int {
 	switch (mode) {
-		case Navigation | NavigationDrag(_,_): return Color.fromARGBf(1,0,0,1);
+		case Navigation: return new Color(Settings.grid.mode.navigation);
+		case NavigationDrag(_,_): return new Color(Settings.grid.mode.navigation_drag);
 	}
 }
