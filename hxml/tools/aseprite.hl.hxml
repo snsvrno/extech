@@ -1,0 +1,8 @@
+-cp tools/aseprite
+-main Main
+
+-lib ase
+-lib format
+-cp lib
+
+--hl bin/tools/aseprite.hl
