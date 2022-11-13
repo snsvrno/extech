@@ -1,0 +1,5 @@
+hxml/game/game.hxml
+
+-lib hlsdl
+
+-hl bin/game.sdl.hl

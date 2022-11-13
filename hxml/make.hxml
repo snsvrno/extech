@@ -1,0 +1,17 @@
+# a unified "make" file, builds everything
+#
+# run with `runner` to minimize re-building
+# things that have not been updated
+
+#########################################################
+# all the pre work / builds should be done here
+
+# building the sprites from aseprite files
+--next
+hxml/tools/aseprite.hl.hxml
+--cmd hl bin/tools/aseprite.hl --folder res.src/ -o res/spritesheet
+
+########################################################
+# the release targets
+--next
+hxml/game/hl.linux.hxml

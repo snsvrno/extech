@@ -1,0 +1,8 @@
+# containing all generic things
+# for the gome build
+
+-cp src
+
+-main Game
+
+hxml/libraries.hxml

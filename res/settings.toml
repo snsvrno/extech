@@ -1,0 +1,17 @@
+[grid]
+backbuffer = true # enables the backbuffer object during generation
+alpha = 1.0 # the standard alpha of the grid object against the background
+
+[grid.fade] # everything related to the transition effects
+enabled = true # enables the fading transition
+timer = 0.5 # the transition time (in seconds) when transitioning grid zoom levels
+
+[grid.mode] # the colors of the grid at different modes
+navigation = 0xFF0044FF
+navigation_drag = 0xFF0044FF
+
+[debug]
+
+[debug.update_watch]
+flash_times = 3
+flash_length = 1.1
