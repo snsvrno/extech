@@ -14,6 +14,8 @@ class Map extends gamekit.Scene {
 
 	override function init() {
 
+		name = "map";
+
 		///////////////////////////////////////////////////////////
 /*
 		var filters = new h2d.filter.Group();
@@ -36,7 +38,7 @@ class Map extends gamekit.Scene {
 		//////////////////////////////////////////////////////////
 		mode = Navigation;
 
-		#if debug debug.Debug.attach(ui); #end
+		#if debug debug.Debug.attach(ui, name); #end
 	}
 
 	override function update(dt : Float) {
@@ -46,13 +48,13 @@ class Map extends gamekit.Scene {
 
 	////////////////////////////////////////////////////////////
 
-	inline static private var zoomIncrement : Float = 0.1;
 	inline static private var zoomMin : Float = 0.2;
 	inline static private var zoomMax : Float = 2;
 	private function zoom(delta : Float) {
-		var newScale = s2d.camera.scaleX + zoomIncrement * delta;
-		if (newScale > zoomMax) newScale = zoomMax;
-		else if (newScale < zoomMin) newScale = zoomMin;
+		var newScale = s2d.camera.scaleX - Settings.map.zoom.increment * delta;
+		if (newScale > Settings.map.zoom.max) newScale = Settings.map.zoom.max;
+		else if (newScale < Settings.map.zoom.min) newScale = Settings.map.zoom.min;
+		#if debug watch("zoom", newScale); #end
 		s2d.camera.setScale(newScale, newScale);
 	}
 
@@ -83,7 +85,7 @@ class Map extends gamekit.Scene {
 	}
 
 	override function onMouseMove(x:Float, y:Float) {
-		debug.Debug.updateWatch("pos", '${x},${y}');
+		#if debug watch("pos", '${x},${y}'); #end
 
 		switch(mode) {
 			case NavigationDrag(cpos,startpos):

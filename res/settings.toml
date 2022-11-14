@@ -1,6 +1,16 @@
+[map]
+
+[map.zoom]
+increment = 0.1; # the smallest change in camera zoom
+max = 4.0; # the maximum allowable camera zoom
+min = 0.2; # the minimum allowable camera zoom
+
 [grid]
 backbuffer = true # enables the backbuffer object during generation
 alpha = 1.0 # the standard alpha of the grid object against the background
+
+[grid.draw]
+factor = 0.5 # a factor that is used to determine when to switch the zoom level
 
 [grid.fade] # everything related to the transition effects
 enabled = true # enables the fading transition

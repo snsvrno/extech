@@ -149,11 +149,19 @@ class Grid extends h2d.Object {
 		* calculates what the view scale should be based on the camera scale
 		*/
 	private function calculateScale() : Float {
-		var factor = Math.floor(camera.scaleX/0.25);
-
 		var drawScale = 1.0;
-		if (camera.scaleX < 1) drawScale = 4 - factor;
-		else if (camera.scaleX > 1) drawScale = 1/(factor - 3);
+		var range = 1;
+
+		if (camera.scaleX < 1) {
+			range = Math.floor(camera.scaleX);
+		} else if (camera.scaleX > 1) {
+			range = Math.ceil(camera.scaleX);
+			drawScale = 1/range;
+		}
+
+		#if debug watch("range", range); #end
+		#if debug watch("drawScale", drawScale); #end
+
 		return drawScale;
 	}
 
