@@ -16,7 +16,9 @@ class Game extends gamekit.Game {
 
 		#end
 
-		resolution = { width: 256, height: 256 };
+		var window = hxd.Window.getInstance();
+		resolution = { width: window.width, height: window.height };
+		// resolution = { width: 256, height: 256 };
 		scene = new scenes.map.Map();
 	}
 }

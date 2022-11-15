@@ -6,9 +6,13 @@ class Scene {
 	public var s2d : h2d.Scene;
 	public var ui : h2d.Scene;
 
+	public var name : String;
+	public var id : String;
+
 	public function new() {
 		s2d = new h2d.Scene();
 		ui = new h2d.Scene();
+		id = sn.Hash.gen(10);
 	}
 
 	final public function setup() : Bool {

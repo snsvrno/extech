@@ -149,11 +149,26 @@ class Grid extends h2d.Object {
 		* calculates what the view scale should be based on the camera scale
 		*/
 	private function calculateScale() : Float {
-		var factor = Math.floor(camera.scaleX/0.25);
-
 		var drawScale = 1.0;
-		if (camera.scaleX < 1) drawScale = 4 - factor;
-		else if (camera.scaleX > 1) drawScale = 1/(factor - 3);
+
+		var gridSize = grid.tile.width * camera.scaleX;
+
+		var xw = gridSize / gamekit.Game.width;
+		var yh = gridSize / gamekit.Game.height;
+
+		var small = Math.min(xw,yh);
+		var large = Math.max(xw,yh);
+
+		var sz = Settings.grid.draw.min / small;
+		var lz = large / Settings.grid.draw.max;
+
+		if (lz > 1) drawScale = 1 / (Math.floor(lz) * 2);
+		else if (sz > 1) drawScale = (Math.floor(sz) * 2);
+
+		#if debug watch("sz", sz); #end
+		#if debug watch("lz", lz); #end
+		#if debug watch("drawScale", drawScale); #end
+
 		return drawScale;
 	}
 

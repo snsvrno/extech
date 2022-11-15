@@ -5,6 +5,9 @@ class Watch extends h2d.Flow {
 	private static var primaryTile : h2d.Tile;
 	private static var flashTile : h2d.Tile;
 
+	/** will only flash if the value is actually different */
+	public var onChangeOnly : Bool = true;
+
 	var prefix : h2d.Text;
 	var value : h2d.Text;
 
@@ -33,6 +36,8 @@ class Watch extends h2d.Flow {
 	}
 
 	public function setValue(text : String) : Null<(dt:Float) -> Bool> {
+		if (value.text == text && onChangeOnly) return null;
+
 		value.text = text;
 
 		if (!changing) {
