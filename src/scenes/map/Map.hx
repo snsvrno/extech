@@ -10,7 +10,10 @@ class Map extends gamekit.Scene {
 		return mode = newMode;
 	}
 
-	var grid : Grid;
+	private var grid : Grid;
+
+	/** the position on the zoom curve */
+	private var zoomPosition : Float = 1;
 
 	override function init() {
 
@@ -48,12 +51,14 @@ class Map extends gamekit.Scene {
 
 	////////////////////////////////////////////////////////////
 
-	inline static private var zoomMin : Float = 0.2;
-	inline static private var zoomMax : Float = 2;
 	private function zoom(delta : Float) {
-		var newScale = s2d.camera.scaleX - Settings.map.zoom.increment * delta;
+		var newZoomPosition = zoomPosition - Settings.map.zoom.increment * delta;
+		var newScale = Settings.map.zoom.a * Math.exp(newZoomPosition * Settings.map.zoom.b);
+
 		if (newScale > Settings.map.zoom.max) newScale = Settings.map.zoom.max;
 		else if (newScale < Settings.map.zoom.min) newScale = Settings.map.zoom.min;
+		else zoomPosition = newZoomPosition;
+
 		#if debug watch("zoom", newScale); #end
 		s2d.camera.setScale(newScale, newScale);
 	}
