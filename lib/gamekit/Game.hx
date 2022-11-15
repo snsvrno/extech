@@ -9,6 +9,12 @@ class Game extends hxd.App {
 	public static function addToUpdateCalls(call : gamekit.ds.UpdateCall)
 		if (instance != null) instance.temporaryUpdateCalls.push(call);
 
+	public static var width (get, null) : Int;
+	private static function get_width() : Int return instance.resolution.width;
+
+	public static var height (get, null) : Int;
+	private static function get_height() : Int return instance.resolution.height;
+
 	// PRIVATE CLASS MEMBERS /////////////////////////////////////////////////////////////
 
 	private var resolution(default,set) : gamekit.ds.Resolution;
